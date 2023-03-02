@@ -1,0 +1,23 @@
+.css-nnid7-MuiSlider-valueLabel {
+    word-wrap: break-word!important;
+}
+
+.my-slider {
+    width: 80vw;
+}
+
+.css-nnid7-MuiSlider-valueLabel {
+    background-color: white!important;
+    color: #0167B3!important;
+    box-shadow: 0 5px 15px rgba(14, 88, 143, 0.2)!important;
+    border-radius: 7px!important;
+    white-space: pre-wrap!important;
+    text-align: center!important;
+}
+
+@media (max-width: 1000px) {
+    .my-slider {
+        margin-top: 40px;
+        width: 90vw;
+    }
+}

@@ -1,0 +1,26 @@
+.container {
+    background: #a14a4a;
+    display: flex;
+    justify-content: space-between;
+}
+
+.linear_progress {
+    height: 5px;
+}
+
+.main_title {
+    padding: 20px 0 20px 125px;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.userNameLogoutWrapper {
+    display: flex;
+}
+
+@media (max-width: 600px) {
+    .main_title {
+        font-size: 1.8rem;
+        padding: 20px 0 20px 60px;
+    }
+}
