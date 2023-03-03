@@ -20,6 +20,7 @@ export function MySlider(props: MySliderPropsType) {
         function handleResize() {
             setSize(window.innerWidth)
         }
+
         window.addEventListener('resize', handleResize)
     }, [window.innerWidth])
 
@@ -32,100 +33,95 @@ export function MySlider(props: MySliderPropsType) {
         maxCurrentMonth: Number(props.maxCurrentData.split('/')[0])
     }
 
-    const max = ((dataForSlider.maxData - dataForSlider.minData) * 12);
+    const max = ((dataForSlider.maxData - dataForSlider.minData) * 12); // количество делений
 
-    const maxYear = (dataForSlider.maxData - dataForSlider.minData);
+    const yearsCount = (dataForSlider.maxData - dataForSlider.minData); // количество годов
 
-    const minCount = ((dataForSlider.minCurrentData - dataForSlider.minData) * 12) + dataForSlider.minCurrentMonth - 1;
-    const maxCount = ((dataForSlider.maxCurrentData - dataForSlider.minData) * 12) + dataForSlider.maxCurrentMonth - 1;
+    const minCount = ((dataForSlider.minCurrentData - dataForSlider.minData) * 12) + dataForSlider.minCurrentMonth - 1; // позиция левого кругляшка
+    const maxCount = ((dataForSlider.maxCurrentData - dataForSlider.minData) * 12) + dataForSlider.maxCurrentMonth - 1; // позиция правого кругляшка
 
-    const [value, setValue] = React.useState<number[]>([minCount, maxCount]);
+    const [value, setValue] = React.useState<number[]>([minCount, maxCount]); // позиции круглишков
 
     const handleChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
-    };
+    };  // прорисовка круглишков
 
-    const valueLabelFormat = (value1: number) => {
-        if (value1 % 12 === 0) {
-            return `январь ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 1) {
-            return `февраль ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 2) {
-            return `март ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 3) {
-            return `апрель ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 4) {
-            return `май ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 5) {
-            return `июнь ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 6) {
-            return `июль ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 7) {
-            return `август ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 8) {
-            return `сентябрь ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 9) {
-            return `октябрь ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 10) {
-            return `ноябрь ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-        if (value1 % 12 === 11) {
-            return `декабрь ${dataForSlider.minData + Math.floor(value1 / 12)}`
-        }
-    }
+    const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'нояб', 'дек']  // массив месяков
 
-    let marks = [
-        {
-            value: 0,
-            label: props.minData.split('/')[1],
-        }
-    ];
+    const valueLabelFormat = (value: number) => {
+        return `${months[value % 12]} ${dataForSlider.minData + Math.floor(value / 12)}`
+    } // текст связанный с кругами
 
+    let marks: any = []; // информация деления
 
-    for (let i = 0; i <= maxYear; i++) {
-        let temp = {
-            value: 12 * i,
+    let temp: any = []
+
+    for (let i = 0; i <= yearsCount; i++) {
+        let tempEl = {
+            value: i * 12,
             label: `${dataForSlider.minData + i}`
         }
-        marks = [...marks, temp]
+
+        temp.push(tempEl)
+
+        marks = temp
     }
 
+    if (props.mode === 'months') {
+        if (size * 0.8 < 37 * 11 * marks.length) {
+            let temp_arr: any = [];
 
-    const months = ['янв', 'фев', 'мар', 'апр', 'май', 'июн', 'июл', 'авг', 'сен', 'окт', 'нояб', 'дек']
+            temp_arr.push(marks[0])
+            temp_arr.push(marks[marks.length - 1])
 
-    if (props.mode === 'months' && window.innerWidth > 900) {
-        for (let i = 0; i <= max; i++) {
-            if (i !== 0 && i % 12 !== 0) {
-                let temp = {
-                    value: i,
-                    label: `${months[i % 12]}`
+            marks = [...temp_arr]
+        } else {
+            for (let i = 0; i <= max; i++) {
+                if (i !== 0 && i % 12 !== 0) {
+                    let temp = {
+                        value: i,
+                        label: `${months[i % 12]}`
+                    }
+                    marks = [...marks, temp]
                 }
-                marks = [...marks, temp]
             }
         }
     }
 
-    if (props.mode === 'months' && 530 < window.innerWidth && window.innerWidth < 900) {
-        for (let i = 0; i <= max; i++) {
-            if (i !== 0 && i % 12 !== 0 && i%2!==1) {
-                let temp = {
-                    value: i,
-                    label: `${months[i % 12]}`
-                }
-                marks = [...marks, temp]
-            }
+    if (size * 0.8 < 37 * yearsCount && props.mode === 'years') {
+
+        let temp_arr: any = [];
+
+        let center;
+        if (marks.length % 2 === 0) {
+            center = Math.round(marks.length / 2)
+        } else {
+            center = Math.round(marks.length / 2) - 1
         }
+
+        let beforeCenter;
+        if (center % 2 === 0) {
+            beforeCenter = center / 2;
+        } else {
+            beforeCenter = (center + 1) / 2
+        }
+
+        let afterCenter
+        if (center % 2 !== 0) {
+            afterCenter = center + ((center - 1) / 2)
+        } else {
+            afterCenter = center + (center / 2)
+        }
+
+        temp_arr.push(marks[0])
+        temp_arr.push(marks[beforeCenter])
+        temp_arr.push(marks[center])
+        temp_arr.push(marks[afterCenter])
+        temp_arr.push(marks[marks.length - 1])
+
+        marks = [...temp_arr]
     }
+
 
     return (
         <div className='my-slider'>

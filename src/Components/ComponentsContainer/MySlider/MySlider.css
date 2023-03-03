@@ -15,6 +15,10 @@
     text-align: center!important;
 }
 
+.MuiSlider-markLabel {
+    overflow: hidden!important;
+}
+
 @media (max-width: 1000px) {
     .my-slider {
         margin-top: 40px;

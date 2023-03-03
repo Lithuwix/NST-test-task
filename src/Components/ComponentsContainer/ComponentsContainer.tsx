@@ -21,7 +21,7 @@ export const ComponentsContainer = () => {
                                 minData='1/2014'
                                 maxData='1/2021'
                                 minCurrentData='5/2015'
-                                maxCurrentData='9/2017'
+                                maxCurrentData='9/2016'
                             />
                         </div>
                     }
